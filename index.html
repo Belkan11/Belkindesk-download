@@ -97,14 +97,27 @@ h2 { margin:10px 0 5px; font-size:clamp(20px,4vw,28px); }
 </div>
 <script>
 const track=document.querySelector('.track'),slides=[...document.querySelectorAll('.slide')],dotsBox=document.querySelector('.dots');
-let current=0,startX=0,deltaX=0;
+let current=0,startX=null,deltaX=0,dragging=false,activePointer=null;
 slides.forEach((_,i)=>{const b=document.createElement('button');b.className='dot'+(i===0?' active':'');b.setAttribute('aria-label',`Версия ${i+1}`);b.onclick=()=>go(i);dotsBox.appendChild(b)});
 const dots=[...document.querySelectorAll('.dot')];
 function go(i){current=(i+slides.length)%slides.length;track.style.transform=`translateX(-${current*100}%)`;dots.forEach((d,n)=>d.classList.toggle('active',n===current));}
 document.querySelector('.prev').onclick=()=>go(current-1);document.querySelector('.next').onclick=()=>go(current+1);
-track.addEventListener('pointerdown',e=>{startX=e.clientX;deltaX=0;track.setPointerCapture(e.pointerId)});
-track.addEventListener('pointermove',e=>{if(!startX)return;deltaX=e.clientX-startX});
-track.addEventListener('pointerup',()=>{if(Math.abs(deltaX)>45)go(current+(deltaX<0?1:-1));startX=0});
+track.addEventListener('pointerdown',e=>{
+ if(e.target.closest('a,button')) return;
+ startX=e.clientX;deltaX=0;dragging=false;activePointer=e.pointerId;
+});
+track.addEventListener('pointermove',e=>{
+ if(startX===null||e.pointerId!==activePointer)return;
+ deltaX=e.clientX-startX;
+ if(!dragging&&Math.abs(deltaX)>8){dragging=true;track.setPointerCapture(e.pointerId)}
+});
+track.addEventListener('pointerup',e=>{
+ if(startX===null||e.pointerId!==activePointer)return;
+ if(dragging&&Math.abs(deltaX)>45)go(current+(deltaX<0?1:-1));
+ if(track.hasPointerCapture(e.pointerId))track.releasePointerCapture(e.pointerId);
+ startX=null;dragging=false;activePointer=null;
+});
+track.addEventListener('pointercancel',()=>{startX=null;dragging=false;activePointer=null});
 document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')go(current-1);if(e.key==='ArrowRight')go(current+1)});
 const modal=document.getElementById('modal');document.getElementById('infoBtn').onclick=()=>modal.classList.add('open');document.querySelector('.close').onclick=()=>modal.classList.remove('open');modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open')};
 </script>
