@@ -17,7 +17,6 @@ header h1 { color:var(--yellow); font-size:clamp(27px,6vw,40px); margin:0; lette
 header p { color:var(--muted); margin:8px 0 0; font-size:clamp(12px,2.8vw,15px); }
 .eyebrow { display:inline-flex; align-items:center; gap:7px; margin-bottom:8px; color:#f1f2f4; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; }
 .eyebrow::before { content:""; width:7px; height:7px; border-radius:50%; background:var(--yellow); box-shadow:0 0 16px var(--yellow); }
-.info { position:fixed; z-index:20; top:max(14px,env(safe-area-inset-top)); right:14px; width:44px; height:44px; border-radius:14px; border:1px solid #ffd40066; color:var(--yellow); background:#0d121bd9; box-shadow:inset 0 1px #ffffff16,0 10px 30px #0008; font-weight:bold; font-size:18px; cursor:pointer; backdrop-filter:blur(14px); }
 .carousel { position:relative; width:min(92vw,860px); margin:0 auto; padding:8px 54px 0; touch-action:pan-y; }
 .viewport { overflow:hidden; border-radius:24px; }
 .track { display:flex; transition:transform .42s cubic-bezier(.22,.8,.3,1); }
@@ -40,12 +39,37 @@ h2 { margin:10px 0 5px; font-size:clamp(20px,4vw,28px); }
 .dot { width:9px; height:9px; padding:0; border:0; border-radius:50%; background:#ffffff35; cursor:pointer; transition:.25s; }
 .dot.active { width:30px; border-radius:10px; background:linear-gradient(90deg,var(--yellow),var(--yellow2)); box-shadow:0 0 18px #ffd00066; }
 .counter { position:absolute; z-index:5; top:22px; right:22px; padding:6px 9px; border:1px solid #ffffff24; border-radius:999px; background:#05070aaa; color:#fff; font:700 11px/1 Arial; backdrop-filter:blur(10px); }
-.modal { position:fixed; z-index:30; inset:0; display:none; align-items:center; justify-content:center; padding:20px; background:#000b; }
-.modal.open { display:flex; }
-.modal-content { width:min(430px,100%); padding:24px; border:1px solid #ffffff28; border-radius:18px; background:#121925f5; box-shadow:0 30px 90px #000; }
-.modal-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
-.modal h3 { color:var(--yellow); margin:0; }.close { border:0; background:transparent; color:#fff; font-size:26px; cursor:pointer; }
-.modal a { display:block; color:#e8e8e8; text-decoration:none; padding:12px 0; border-bottom:1px solid #ffffff12; }
+.sheet-hint { position:fixed; z-index:18; left:50%; bottom:max(8px,env(safe-area-inset-bottom)); transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:5px; border:0; background:transparent; color:#ffffff88; font:700 9px/1 Arial; letter-spacing:1.8px; text-transform:uppercase; cursor:pointer; }
+.sheet-hint::before { content:""; width:44px; height:4px; border-radius:4px; background:linear-gradient(90deg,#ffffff22,var(--yellow),#ffffff22); box-shadow:0 0 16px #ffd40055; animation:hint 2.2s ease-in-out infinite; }
+@keyframes hint { 50% { transform:translateY(-5px); filter:brightness(1.4); } }
+.sheet-backdrop { position:fixed; z-index:39; inset:0; background:#020306c4; opacity:0; pointer-events:none; transition:opacity .45s; backdrop-filter:blur(8px); }
+.sheet-backdrop.open { opacity:1; pointer-events:auto; }
+.feature-sheet { position:fixed; z-index:40; inset:4vh 0 0; transform:translateY(102%); transition:transform .7s cubic-bezier(.16,1,.3,1); overflow:auto; overscroll-behavior:contain; border:1px solid #ffffff1a; border-bottom:0; border-radius:30px 30px 0 0; background:linear-gradient(160deg,#141b26f8,#070b11fc 60%); box-shadow:0 -30px 100px #000,0 -1px #ffd40044; }
+.feature-sheet.open { transform:translateY(0); }
+.sheet-grab { position:sticky; z-index:4; top:0; height:25px; background:linear-gradient(#111821,#111821dd); cursor:grab; }
+.sheet-grab::after { content:""; position:absolute; left:50%; top:9px; width:52px; height:4px; transform:translateX(-50%); border-radius:4px; background:#ffffff3b; }
+.sheet-header { position:sticky; z-index:3; top:25px; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:14px clamp(20px,5vw,72px); border-bottom:1px solid #ffffff12; background:#101720e8; backdrop-filter:blur(22px); }
+.sheet-brand { min-width:max-content; color:var(--yellow); font-size:13px; font-weight:900; letter-spacing:1.6px; }
+.resource-links { display:flex; align-items:center; justify-content:flex-end; gap:8px; flex-wrap:wrap; }
+.resource-links a { color:#e6e9ed; text-decoration:none; padding:9px 12px; border:1px solid #ffffff18; border-radius:10px; background:#ffffff08; font-size:12px; font-weight:700; transition:.2s; }
+.resource-links a:hover { color:#111; border-color:var(--yellow); background:var(--yellow); }
+.sheet-close { width:38px; height:38px; flex:0 0 38px; border:1px solid #ffffff1c; border-radius:11px; background:#ffffff08; color:#fff; font-size:22px; cursor:pointer; }
+.sheet-body { width:min(1180px,92vw); margin:auto; padding:clamp(32px,6vw,74px) 0 70px; }
+.sheet-kicker { color:var(--yellow); font:800 11px/1 Arial; letter-spacing:2px; text-transform:uppercase; }
+.sheet-title { max-width:850px; margin:13px 0 14px; font-size:clamp(30px,5vw,62px); line-height:.98; letter-spacing:-2px; }
+.sheet-lead { max-width:760px; margin:0; color:#adb6c2; font-size:clamp(15px,2vw,19px); line-height:1.6; }
+.flow { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:center; gap:14px; margin:45px 0; padding:22px; border:1px solid #ffffff13; border-radius:20px; background:#ffffff05; }
+.flow-node { min-height:108px; padding:18px; border:1px solid #ffffff13; border-radius:15px; background:linear-gradient(145deg,#19212d,#0d1219); }
+.flow-node b { display:block; color:#fff; margin-bottom:8px; font-size:15px; }.flow-node span { color:#8f99a7; font-size:12px; line-height:1.45; }
+.flow-index { display:block; margin-bottom:15px; color:var(--yellow); font:800 10px/1 Arial; letter-spacing:1px; }
+.flow-arrow { color:var(--yellow); font-size:24px; opacity:.65; }
+.capabilities { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.cap { position:relative; min-height:190px; padding:24px; overflow:hidden; border:1px solid #ffffff13; border-radius:18px; background:#0e141dd9; transition:.25s; }
+.cap:hover { transform:translateY(-4px); border-color:#ffd40055; background:#121a25; }
+.cap svg { width:32px; height:32px; margin-bottom:23px; fill:none; stroke:var(--yellow); stroke-width:1.5; }
+.cap h3 { margin:0 0 8px; font-size:16px; }.cap p { margin:0; color:#8f99a7; font-size:13px; line-height:1.55; }
+.cap-num { position:absolute; right:17px; top:12px; color:#ffffff0b; font:900 48px/1 Arial; }
+.smoke { position:fixed; z-index:38; inset:0; width:100%; height:100%; pointer-events:none; }
 @media (max-width:600px) {
  header { padding-top:max(14px,env(safe-area-inset-top)); padding-bottom:8px; }
  header p { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -56,6 +80,19 @@ h2 { margin:10px 0 5px; font-size:clamp(20px,4vw,28px); }
  .nav { width:38px; height:38px; top:40%; background:#080b10d9; }
  .prev { left:20px; } .next { right:20px; }
  .dots { padding-top:9px; }
+ .sheet-hint { bottom:max(4px,env(safe-area-inset-bottom)); }
+ .feature-sheet { inset:2vh 0 0; border-radius:24px 24px 0 0; }
+ .sheet-header { top:25px; display:grid; grid-template-columns:1fr auto; padding:10px 14px; }
+ .sheet-brand { grid-column:1; }.sheet-close { grid-column:2; grid-row:1; }
+ .resource-links { grid-column:1/-1; justify-content:stretch; display:grid; grid-template-columns:repeat(3,1fr); }
+ .resource-links a { padding:9px 5px; text-align:center; font-size:10px; }
+ .sheet-body { width:calc(100% - 28px); padding-top:32px; }
+ .sheet-title { letter-spacing:-1px; }
+ .flow { grid-template-columns:1fr; margin:28px 0; padding:12px; }
+ .flow-arrow { transform:rotate(90deg); text-align:center; line-height:10px; }
+ .flow-node { min-height:0; }
+ .capabilities { grid-template-columns:1fr; }
+ .cap { min-height:150px; }
 }
 @media (max-height:620px) {
  header p { display:none; } header { padding-top:10px; padding-bottom:5px; }
@@ -67,7 +104,6 @@ h2 { margin:10px 0 5px; font-size:clamp(20px,4vw,28px); }
 </style>
 </head>
 <body>
-<button class="info" aria-label="Информация" id="infoBtn">i</button>
 <header><div class="eyebrow">Private workspace system</div><h1>BelkinDESK</h1><p>Интеллектуальное рабочее пространство — выберите свою версию</p></header>
 <main class="carousel" id="carousel">
  <button class="nav prev" aria-label="Предыдущая версия">‹</button>
@@ -88,13 +124,28 @@ h2 { margin:10px 0 5px; font-size:clamp(20px,4vw,28px); }
  <button class="nav next" aria-label="Следующая версия">›</button>
  <div class="dots" aria-label="Выбор версии"></div>
 </main>
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
- <div class="modal-content"><div class="modal-head"><h3 id="modalTitle">Документация</h3><button class="close" aria-label="Закрыть">×</button></div>
-  <a href="https://drive.google.com/file/d/1ofaS4Oil_yx1CeYlv6GFqk9w3WjVWo6Q/view?usp=sharing" target="_blank" rel="noopener">📘 Руководство пользователя</a>
-  <a href="https://drive.google.com/file/d/1GGAyZcxYSR3Hdpw84ENZZEuAW2bslCKw/view?usp=sharing" target="_blank" rel="noopener">🔐 Инструкция по GitHub Token</a>
-  <a href="https://drive.google.com/drive/folders/1jdkI7i2nHZ-z1fzyLc-b77-gtFIJ-qxe?usp=sharing" target="_blank" rel="noopener">📂 Общий каталог</a>
+<button class="sheet-hint" id="sheetHint" aria-label="Открыть возможности">проведите вверх</button>
+<canvas class="smoke" id="smoke"></canvas><div class="sheet-backdrop" id="sheetBackdrop"></div>
+<section class="feature-sheet" id="featureSheet" aria-label="Возможности BelkinDESK" aria-hidden="true">
+ <div class="sheet-grab" id="sheetGrab"></div>
+ <div class="sheet-header"><div class="sheet-brand">BELKIN DESK / RESOURCES</div><nav class="resource-links">
+  <a href="https://drive.google.com/file/d/1ofaS4Oil_yx1CeYlv6GFqk9w3WjVWo6Q/view?usp=sharing" target="_blank" rel="noopener">Руководство</a>
+  <a href="https://drive.google.com/file/d/1GGAyZcxYSR3Hdpw84ENZZEuAW2bslCKw/view?usp=sharing" target="_blank" rel="noopener">GitHub Token</a>
+  <a href="https://drive.google.com/drive/folders/1jdkI7i2nHZ-z1fzyLc-b77-gtFIJ-qxe?usp=sharing" target="_blank" rel="noopener">Каталог файлов</a>
+ </nav><button class="sheet-close" id="sheetClose" aria-label="Закрыть">×</button></div>
+ <div class="sheet-body"><span class="sheet-kicker">News intelligence workspace</span><h2 class="sheet-title">Все важные источники.<br>Один рабочий контур.</h2>
+  <p class="sheet-lead">BelkinDESK объединяет отраслевые и медицинские публикации, RSS-ленты, Telegram-каналы и профессиональные журналы. Система сокращает информационный шум и превращает ежедневный поток новостей в управляемую рабочую среду.</p>
+  <div class="flow"><div class="flow-node"><i class="flow-index">01 / INPUT</i><b>Источники</b><span>Профессиональные журналы, сайты, RSS и каналы</span></div><div class="flow-arrow">→</div><div class="flow-node"><i class="flow-index">02 / PROCESS</i><b>Единый поток</b><span>Сбор, структурирование, поиск и контроль прочитанного</span></div><div class="flow-arrow">→</div><div class="flow-node"><i class="flow-index">03 / OUTPUT</i><b>Рабочее знание</b><span>Избранное, быстрый доступ и фокус на важном</span></div></div>
+  <div class="capabilities">
+   <article class="cap"><span class="cap-num">01</span><svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h10M4 19h13"/><circle cx="18" cy="12" r="2"/></svg><h3>Агрегация новостей</h3><p>Собирает разрозненные профессиональные источники в единую ленту без переключения между сервисами.</p></article>
+   <article class="cap"><span class="cap-num">02</span><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5M8 11h6"/></svg><h3>Поиск и фильтрация</h3><p>Быстро находит нужные материалы и позволяет работать с отдельными тематическими подписками.</p></article>
+   <article class="cap"><span class="cap-num">03</span><svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9Z"/></svg><h3>Избранное</h3><p>Сохраняет ключевые публикации в персональную коллекцию для дальнейшего изучения и использования.</p></article>
+   <article class="cap"><span class="cap-num">04</span><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg><h3>Рабочий дайджест</h3><p>Помогает быстро оценить повестку и не пропустить значимые обновления по выбранной специализации.</p></article>
+   <article class="cap"><span class="cap-num">05</span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><h3>Тайм-менеджмент</h3><p>Объединяет новости с расписанием, заметками, погодой и календарём в одном компактном интерфейсе.</p></article>
+   <article class="cap"><span class="cap-num">06</span><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5"/></svg><h3>Персональная база</h3><p>Формирует собственный архив полезных материалов и поддерживает непрерывное профессиональное обучение.</p></article>
+  </div>
  </div>
-</div>
+</section>
 <script>
 const track=document.querySelector('.track'),slides=[...document.querySelectorAll('.slide')],dotsBox=document.querySelector('.dots');
 let current=0,startX=null,deltaX=0,dragging=false,activePointer=null;
@@ -119,7 +170,14 @@ track.addEventListener('pointerup',e=>{
 });
 track.addEventListener('pointercancel',()=>{startX=null;dragging=false;activePointer=null});
 document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')go(current-1);if(e.key==='ArrowRight')go(current+1)});
-const modal=document.getElementById('modal');document.getElementById('infoBtn').onclick=()=>modal.classList.add('open');document.querySelector('.close').onclick=()=>modal.classList.remove('open');modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open')};
+const sheet=document.getElementById('featureSheet'),backdrop=document.getElementById('sheetBackdrop'),canvas=document.getElementById('smoke'),ctx=canvas.getContext('2d');
+function smokeBurst(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;canvas.width=innerWidth*devicePixelRatio;canvas.height=innerHeight*devicePixelRatio;ctx.scale(devicePixelRatio,devicePixelRatio);const p=Array.from({length:70},()=>({x:innerWidth*(.18+Math.random()*.64),y:innerHeight+Math.random()*24,r:12+Math.random()*34,vx:(Math.random()-.5)*2.8,vy:-1.5-Math.random()*3,a:.16+Math.random()*.2,life:0,max:45+Math.random()*35}));function frame(){ctx.clearRect(0,0,innerWidth,innerHeight);let alive=false;p.forEach(o=>{if(o.life++>o.max)return;alive=true;o.x+=o.vx;o.y+=o.vy;o.r+=.65;const a=o.a*(1-o.life/o.max),g=ctx.createRadialGradient(o.x,o.y,0,o.x,o.y,o.r);g.addColorStop(0,`rgba(255,220,90,${a})`);g.addColorStop(.35,`rgba(120,130,142,${a*.7})`);g.addColorStop(1,'rgba(20,24,30,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(o.x,o.y,o.r,0,Math.PI*2);ctx.fill()});if(alive)requestAnimationFrame(frame);else ctx.clearRect(0,0,innerWidth,innerHeight)}frame()}
+function openSheet(){sheet.classList.add('open');backdrop.classList.add('open');sheet.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';smokeBurst()}
+function closeSheet(){sheet.classList.remove('open');backdrop.classList.remove('open');sheet.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+document.getElementById('sheetHint').onclick=openSheet;document.getElementById('sheetClose').onclick=closeSheet;backdrop.onclick=closeSheet;
+let pageTouchY=null,sheetTouchY=null;document.addEventListener('touchstart',e=>{if(!sheet.classList.contains('open'))pageTouchY=e.touches[0].clientY},{passive:true});document.addEventListener('touchend',e=>{if(pageTouchY!==null&&pageTouchY-e.changedTouches[0].clientY>70)openSheet();pageTouchY=null},{passive:true});
+const grab=document.getElementById('sheetGrab');grab.addEventListener('pointerdown',e=>{sheetTouchY=e.clientY;grab.setPointerCapture(e.pointerId)});grab.addEventListener('pointerup',e=>{if(sheetTouchY!==null&&e.clientY-sheetTouchY>55)closeSheet();sheetTouchY=null});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet();if(e.key==='ArrowUp'&&!sheet.classList.contains('open'))openSheet()});
 </script>
 </body>
 </html>
